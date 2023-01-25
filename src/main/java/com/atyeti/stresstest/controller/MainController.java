@@ -31,4 +31,22 @@ public class MainController {
     }*/
         System.out.println("testapi called ................");
     }
+
+    @GetMapping("/teststressng")
+    public void testStressNg() {
+        try {
+            Process process = Runtime.getRuntime().exec("stress-ng --cpu 4 --timeout 60s");
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            String s = null;
+            while ((s = stdInput.readLine()) != null) {
+                System.out.println(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("testapi called ................");
+    }
+
+
 }
