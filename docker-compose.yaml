@@ -1,0 +1,20 @@
+version: "3"
+services:
+  spring-boot-app:
+      container_name: spring-boot-app
+      build:
+        dockerfile: Dockerfile
+      image: spring-boot-app:latest
+      ports:
+        - "8080:8080"
+
+  envoy:
+    image: lyft/envoy:latest
+    ports:
+      - "10000:10000"
+      - "9901:9901"
+    volumes:
+      - "./envoy.yaml:/etc/envoy/envoy.yaml"
+    command: ["envoy", "-c", "/etc/envoy/envoy.yaml", "--service-cluster", "envoy"]
+    depends_on:
+      - "spring-boot-app"
